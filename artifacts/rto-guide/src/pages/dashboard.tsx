@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowRight, BookOpen, Lightbulb, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StandardsReference } from "@/components/standards-reference";
 
 export default function Dashboard() {
   useEffect(() => {
@@ -51,6 +52,8 @@ export default function Dashboard() {
         <h1 className="text-3xl font-serif font-bold text-foreground">Welcome back</h1>
         <p className="text-muted-foreground mt-2 text-lg">Here's your progress with the RTO Standards 2025.</p>
       </div>
+
+      <StandardsReference />
 
       {/* High-level stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
