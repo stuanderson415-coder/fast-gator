@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
+import trainingHero from "@/assets/training-hero.png";
 import {
   ArrowRight,
   CheckCircle2,
@@ -164,22 +165,38 @@ export default function TrainingPage() {
       </div>
 
       {/* Course hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/25 via-primary/10 to-card border border-primary/20 p-5">
-        <div
-          className="absolute -right-12 -bottom-12 w-40 h-40 rounded-full opacity-25 blur-3xl"
-          style={{ background: "hsl(280, 80%, 60%)" }}
-        />
-        <div className="relative">
-          <div className="flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-primary/90 font-medium">
-            <span className="px-1.5 py-0.5 rounded bg-primary/15 font-mono">
+      <div className="relative overflow-hidden rounded-2xl bg-card border border-primary/20">
+        {/* Hero image */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
+          <img
+            src={trainingHero}
+            alt="Trainer working with adult learners around a workbench"
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent 40%, hsl(240,6%,12%) 100%)",
+            }}
+          />
+          <div className="absolute top-3 left-3 flex items-center gap-2">
+            <span className="text-[10px] tracking-[0.25em] uppercase text-primary-foreground font-medium px-2 py-1 rounded-md bg-primary/90 backdrop-blur-sm font-mono">
               {COURSE.code}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="text-[10px] tracking-[0.25em] uppercase text-foreground/90 font-medium px-2 py-1 rounded-md bg-black/40 backdrop-blur-sm flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {COURSE.totalDuration}
             </span>
           </div>
-          <p className="text-sm text-foreground/80 mt-3 leading-relaxed">
+        </div>
+
+        <div
+          className="absolute -right-12 -bottom-12 w-40 h-40 rounded-full opacity-25 blur-3xl pointer-events-none"
+          style={{ background: "hsl(280, 80%, 60%)" }}
+        />
+        <div className="relative p-5 -mt-2">
+          <p className="text-sm text-foreground/80 leading-relaxed">
             {COURSE.description}
           </p>
 

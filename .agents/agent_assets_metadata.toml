@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "5_rbz8H0kSaWrXdmKLGPs"
+uri = "file://artifacts/rto-guide/src/assets/training-hero.png"
+type = "image"
+title = "training hero"
