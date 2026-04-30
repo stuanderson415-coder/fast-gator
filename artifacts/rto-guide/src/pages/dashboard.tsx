@@ -1,11 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
 import { useGetDashboardSummary } from "@workspace/api-client-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowRight, BookOpen, Lightbulb, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  BookOpen,
+  Lightbulb,
+  Star,
+  TrendingUp,
+  Sparkles,
+  GraduationCap,
+} from "lucide-react";
 import { StandardsReference } from "@/components/standards-reference";
 
 export default function Dashboard() {
@@ -17,22 +22,11 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-10 w-48" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-32 w-full" />
-          ))}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="col-span-2 space-y-6">
-            <Skeleton className="h-64 w-full" />
-            <Skeleton className="h-64 w-full" />
-          </div>
-          <div className="space-y-6">
-            <Skeleton className="h-96 w-full" />
-          </div>
-        </div>
+      <div className="space-y-5">
+        <Skeleton className="h-20 w-full rounded-2xl" />
+        <Skeleton className="h-44 w-full rounded-2xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+        <Skeleton className="h-56 w-full rounded-2xl" />
       </div>
     );
   }
@@ -40,223 +34,325 @@ export default function Dashboard() {
   if (isError || !summary) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-        <h2 className="text-xl font-medium text-destructive">Failed to load dashboard</h2>
-        <p className="text-muted-foreground">Please try refreshing the page.</p>
+        <h2 className="text-lg font-medium text-destructive">
+          Failed to load dashboard
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Please try refreshing.
+        </p>
       </div>
     );
   }
 
+  const overall = Math.round(summary.overallPercentComplete);
+
   return (
-    <div className="space-y-8 pb-12 animate-in fade-in duration-500">
+    <div className="space-y-5 animate-in fade-in duration-500">
+      {/* Greeting */}
       <div>
-        <h1 className="text-3xl font-serif font-bold text-foreground">Welcome back</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Here's your progress with the RTO Standards 2025.</p>
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          Monday morning
+        </p>
+        <h1 className="text-2xl font-serif font-medium text-foreground mt-1">
+          Welcome back.
+        </h1>
+      </div>
+
+      {/* Hero progress card */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/30 via-primary/15 to-card border border-primary/20 p-5">
+        <div
+          className="absolute -right-10 -top-10 w-44 h-44 rounded-full opacity-30 blur-3xl"
+          style={{ background: "hsl(265, 80%, 60%)" }}
+        />
+        <div className="relative">
+          <div className="flex items-center justify-between">
+            <div className="text-[10px] uppercase tracking-[0.25em] text-foreground/70">
+              Your progress
+            </div>
+            <TrendingUp className="w-4 h-4 text-foreground/70" />
+          </div>
+          <div className="flex items-baseline gap-2 mt-3">
+            <span className="text-5xl font-serif font-bold text-foreground tabular-nums">
+              {overall}
+            </span>
+            <span className="text-2xl font-serif text-foreground/60">%</span>
+            <span className="text-xs text-muted-foreground ml-2">
+              of 18 standards embedded
+            </span>
+          </div>
+          <div className="mt-4 h-1.5 rounded-full bg-foreground/10 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-[hsl(280,90%,75%)] to-[hsl(255,80%,65%)] transition-all duration-700"
+              style={{ width: `${overall}%` }}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-3 mt-5">
+            <Stat
+              label="Embedded"
+              value={summary.embeddedCount}
+              dotClass="bg-primary"
+            />
+            <Stat
+              label="In progress"
+              value={summary.inProgressCount + summary.planningCount}
+              dotClass="bg-[hsl(220,70%,65%)]"
+            />
+            <Stat
+              label="Not started"
+              value={summary.notStartedCount}
+              dotClass="bg-muted-foreground/40"
+            />
+          </div>
+        </div>
       </div>
 
       <StandardsReference />
 
-      {/* High-level stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="hover-elevate">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Overall Progress</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-foreground">{Math.round(summary.overallPercentComplete)}%</div>
-            <Progress value={summary.overallPercentComplete} className="h-2 mt-3" />
-            <p className="text-xs text-muted-foreground mt-2">{summary.embeddedCount} of {summary.totalStandards} standards embedded</p>
-          </CardContent>
-        </Card>
-        
-        <Card className="hover-elevate">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">In Progress</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{summary.inProgressCount + summary.planningCount}</div>
-            <p className="text-xs text-muted-foreground mt-2">{summary.inProgressCount} active • {summary.planningCount} planning</p>
-          </CardContent>
-        </Card>
-        
-        <Card className="hover-elevate">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Favorited Strategies</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-amber-500 flex items-center gap-2">
-              {summary.favoriteCount}
-              <Star className="w-5 h-5 fill-current" />
-            </div>
-            <Link href="/favorites" className="text-xs text-primary hover:underline mt-2 inline-flex items-center gap-1">
-              View favorites <ArrowRight className="w-3 h-3" />
-            </Link>
-          </CardContent>
-        </Card>
-        
-        <Card className="hover-elevate">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Reflection Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-indigo-500 flex items-center gap-2">
-              {summary.noteCount}
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <Link href="/notes" className="text-xs text-primary hover:underline mt-2 inline-flex items-center gap-1">
-              Read notes <ArrowRight className="w-3 h-3" />
-            </Link>
-          </CardContent>
-        </Card>
+      {/* Quick actions row */}
+      <div className="grid grid-cols-2 gap-3">
+        <QuickTile
+          href="/favorites"
+          icon={Star}
+          label="Favorites"
+          value={summary.favoriteCount}
+          accent="text-[hsl(45,90%,65%)]"
+        />
+        <QuickTile
+          href="/notes"
+          icon={BookOpen}
+          label="Reflections"
+          value={summary.noteCount}
+          accent="text-[hsl(200,70%,65%)]"
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          {/* Quality Areas Progress */}
-          <section className="space-y-4">
-            <h2 className="text-xl font-serif font-bold">Quality Areas</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {summary.qualityAreaProgress.map((qa) => (
-                <Link key={qa.qualityAreaId} href={`/quality-areas/${qa.qualityAreaId}`}>
-                  <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer hover-elevate">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg flex justify-between items-start">
-                        <span>{qa.qualityAreaCode}</span>
-                        <span className="text-sm font-normal text-muted-foreground">{Math.round(qa.percentComplete)}%</span>
-                      </CardTitle>
-                      <CardDescription className="line-clamp-2">{qa.qualityAreaTitle}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Progress value={qa.percentComplete} className="h-1.5" />
-                      <div className="flex gap-2 mt-3 text-xs text-muted-foreground">
-                        <span title="Embedded" className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-green-500" />
-                          {qa.embeddedCount}
-                        </span>
-                        <span title="In Progress" className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-orange-500" />
-                          {qa.inProgressCount}
-                        </span>
-                        <span title="Planning" className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-blue-500" />
-                          {qa.planningCount}
-                        </span>
-                        <span title="Not Started" className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-gray-300" />
-                          {qa.notStartedCount}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          {/* Recent Notes */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-serif font-bold">Recent Reflections</h2>
-              <Link href="/notes">
-                <Button variant="ghost" size="sm" className="text-primary">View All</Button>
-              </Link>
-            </div>
-            
-            {summary.recentNotes.length > 0 ? (
-              <div className="space-y-3">
-                {summary.recentNotes.map((note) => (
-                  <Card key={note.id} className="hover-elevate">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start gap-4">
-                        <div>
-                          <Link href={`/standards/${note.standardId}`} className="text-sm font-medium text-primary hover:underline flex items-center gap-1 mb-1">
-                            Standard {note.standardCode} <ArrowRight className="w-3 h-3" />
-                          </Link>
-                          <p className="text-sm text-foreground line-clamp-2">{note.body}</p>
-                        </div>
-                        <span className="text-xs text-muted-foreground shrink-0 whitespace-nowrap">
-                          {new Date(note.updatedAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card className="bg-muted/50 border-dashed">
-                <CardContent className="p-8 text-center space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                    <BookOpen className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-foreground">No reflections yet</h3>
-                    <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">
-                      Jot down notes and reflections as you implement strategies to build your evidence base.
-                    </p>
-                  </div>
-                  <Link href="/standards">
-                    <Button variant="outline" className="mt-2">Browse Standards</Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            )}
-          </section>
-        </div>
-
-        <div className="space-y-8">
-          {/* Featured Strategy */}
-          {summary.featured && (
-            <section className="space-y-4">
-              <h2 className="text-xl font-serif font-bold flex items-center gap-2">
-                <Lightbulb className="w-5 h-5 text-amber-500" />
-                Strategy of the Day
-              </h2>
-              <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-                <CardHeader>
-                  <CardTitle className="text-lg leading-tight">{summary.featured.strategy.title}</CardTitle>
-                  <CardDescription className="text-foreground/80 mt-2">
-                    <span className="font-medium italic">Why try this?</span> {summary.featured.rationale}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
+      {/* Strategy of the day */}
+      {summary.featured && (
+        <section>
+          <SectionHeader
+            icon={Sparkles}
+            title="Strategy of the day"
+          />
+          <Link href={`/standards/${summary.featured.strategy.standardId}`}>
+            <div className="rounded-2xl bg-card border border-border p-4 cursor-pointer hover:border-primary/40 transition-colors group">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-medium text-foreground leading-snug">
+                    {summary.featured.strategy.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
                     {summary.featured.strategy.summary}
                   </p>
-                  <Link href={`/standards/${summary.featured.strategy.standardId}`}>
-                    <Button className="w-full justify-between group">
-                      View Strategy
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </section>
-          )}
-
-          {/* Recently Updated Standards */}
-          <section className="space-y-4">
-            <h2 className="text-xl font-serif font-bold">Recently Updated</h2>
-            {summary.recentlyUpdatedStandards.length > 0 ? (
-              <div className="space-y-3">
-                {summary.recentlyUpdatedStandards.map((std) => (
-                  <Link key={std.id} href={`/standards/${std.id}`}>
-                    <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
-                      <CardContent className="p-3 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          <span className="text-xs font-medium text-muted-foreground">{std.code}</span>
-                          <span className="text-sm font-medium line-clamp-1 group-hover:text-primary transition-colors">{std.title}</span>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                </div>
+                <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/25 transition-colors">
+                  <Lightbulb className="w-4 h-4 text-primary" />
+                </div>
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground italic">No standards updated yet.</p>
-            )}
-          </section>
+              <div className="mt-3 pt-3 border-t border-border/60 flex items-center justify-between text-[11px]">
+                <span className="text-muted-foreground italic">
+                  Why? {summary.featured.rationale}
+                </span>
+              </div>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      {/* Quality areas */}
+      <section>
+        <SectionHeader icon={GraduationCap} title="Quality areas" />
+        <div className="space-y-2.5">
+          {summary.qualityAreaProgress.map((qa) => (
+            <Link
+              key={qa.qualityAreaId}
+              href={`/quality-areas/${qa.qualityAreaId}`}
+            >
+              <div className="rounded-xl bg-card border border-border p-4 cursor-pointer hover:border-primary/40 transition-colors group">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-primary/80 px-1.5 py-0.5 rounded bg-primary/10">
+                        {qa.qualityAreaCode}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-medium text-foreground mt-1.5 line-clamp-1">
+                      {qa.qualityAreaTitle}
+                    </h3>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-lg font-serif font-medium text-foreground tabular-nums">
+                      {Math.round(qa.percentComplete)}
+                      <span className="text-xs text-muted-foreground">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 h-1 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-primary/80"
+                    style={{ width: `${qa.percentComplete}%` }}
+                  />
+                </div>
+                <div className="mt-2.5 flex gap-3 text-[10px] text-muted-foreground">
+                  <DotStat
+                    n={qa.embeddedCount}
+                    label="embedded"
+                    cls="bg-primary"
+                  />
+                  <DotStat
+                    n={qa.inProgressCount}
+                    label="active"
+                    cls="bg-[hsl(220,70%,65%)]"
+                  />
+                  <DotStat
+                    n={qa.planningCount}
+                    label="planning"
+                    cls="bg-[hsl(280,50%,65%)]"
+                  />
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
+      </section>
+
+      {/* Recent reflections */}
+      <section>
+        <div className="flex items-center justify-between mb-2">
+          <SectionHeader icon={BookOpen} title="Recent reflections" inline />
+          <Link
+            href="/notes"
+            className="text-[11px] text-primary hover:text-primary/80 inline-flex items-center gap-0.5"
+          >
+            All <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        {summary.recentNotes.length > 0 ? (
+          <div className="space-y-2">
+            {summary.recentNotes.slice(0, 3).map((note) => (
+              <Link key={note.id} href={`/standards/${note.standardId}`}>
+                <div className="rounded-xl bg-card border border-border p-3 cursor-pointer hover:border-primary/40 transition-colors">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-mono uppercase text-primary/80 tracking-wider">
+                      Standard {note.standardCode}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {new Date(note.updatedAt).toLocaleDateString(undefined, {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </span>
+                  </div>
+                  <p className="text-xs text-foreground/85 line-clamp-2 leading-relaxed">
+                    {note.body}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-dashed border-border p-5 text-center">
+            <BookOpen className="w-5 h-5 text-muted-foreground mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground">
+              No reflections yet. Add notes as you implement strategies.
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  dotClass,
+}: {
+  label: string;
+  value: number;
+  dotClass: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-1.5">
+        <div className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
+      </div>
+      <div className="text-lg font-serif font-medium text-foreground mt-0.5 tabular-nums">
+        {value}
       </div>
     </div>
+  );
+}
+
+function QuickTile({
+  href,
+  icon: Icon,
+  label,
+  value,
+  accent,
+}: {
+  href: string;
+  icon: typeof Star;
+  label: string;
+  value: number;
+  accent: string;
+}) {
+  return (
+    <Link href={href}>
+      <div className="rounded-2xl bg-card border border-border p-4 cursor-pointer hover:border-primary/40 transition-colors">
+        <div className="flex items-center justify-between">
+          <Icon className={`w-4 h-4 ${accent}`} />
+          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+        </div>
+        <div className="mt-3">
+          <div className="text-2xl font-serif font-medium text-foreground tabular-nums">
+            {value}
+          </div>
+          <div className="text-[11px] text-muted-foreground mt-0.5">
+            {label}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function SectionHeader({
+  icon: Icon,
+  title,
+  inline,
+}: {
+  icon: typeof Star;
+  title: string;
+  inline?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center gap-2 ${inline ? "" : "mb-3"} text-foreground`}
+    >
+      <Icon className="w-3.5 h-3.5 text-primary" />
+      <h2 className="text-xs uppercase tracking-[0.2em] font-medium text-foreground/85">
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+function DotStat({
+  n,
+  label,
+  cls,
+}: {
+  n: number;
+  label: string;
+  cls: string;
+}) {
+  return (
+    <span className="flex items-center gap-1">
+      <span className={`w-1.5 h-1.5 rounded-full ${cls}`} />
+      <span className="tabular-nums">{n}</span> {label}
+    </span>
   );
 }

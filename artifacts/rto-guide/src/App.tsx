@@ -11,6 +11,7 @@ import StrategiesList from "@/pages/strategies-list";
 import FavoritesList from "@/pages/favorites-list";
 import StandardDetail from "@/pages/standard-detail";
 import NotesList from "@/pages/notes-list";
+import TrainingPage from "@/pages/training";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -33,6 +34,7 @@ function Router() {
         <Route path="/strategies" component={StrategiesList} />
         <Route path="/favorites" component={FavoritesList} />
         <Route path="/notes" component={NotesList} />
+        <Route path="/training" component={TrainingPage} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

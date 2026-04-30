@@ -1,110 +1,118 @@
 import { type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, CheckCircle, Home, LayoutList, Lightbulb, Star, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  BookOpen,
+  Home,
+  LayoutList,
+  Lightbulb,
+  Star,
+  GraduationCap,
+} from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Dashboard", icon: Home },
-  { href: "/standards", label: "Standards", icon: LayoutList },
-  { href: "/strategies", label: "Strategies", icon: Lightbulb },
-  { href: "/favorites", label: "Favorites", icon: Star },
-  { href: "/notes", label: "Notes", icon: BookOpen },
+  { href: "/", label: "Home", icon: Home, match: (l: string) => l === "/" },
+  {
+    href: "/standards",
+    label: "Standards",
+    icon: LayoutList,
+    match: (l: string) => l.startsWith("/standards") || l.startsWith("/quality-areas"),
+  },
+  {
+    href: "/training",
+    label: "Training",
+    icon: GraduationCap,
+    match: (l: string) => l.startsWith("/training"),
+  },
+  {
+    href: "/strategies",
+    label: "Strategies",
+    icon: Lightbulb,
+    match: (l: string) => l.startsWith("/strategies"),
+  },
+  {
+    href: "/notes",
+    label: "Notes",
+    icon: BookOpen,
+    match: (l: string) => l.startsWith("/notes") || l.startsWith("/favorites"),
+  },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col md:flex-row">
-      {/* Mobile Header */}
-      <header className="md:hidden flex items-center justify-between p-4 border-b bg-card z-10 sticky top-0">
-        <div className="flex items-center gap-2 text-primary">
-          <BookOpen className="w-6 h-6" />
-          <span className="font-serif font-bold text-lg">RTO Guide</span>
-        </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="w-6 h-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
-            <SheetHeader className="p-6 text-left border-b">
-              <SheetTitle className="flex items-center gap-2 text-primary font-serif">
-                <BookOpen className="w-6 h-6" />
-                RTO Guide 2025
-              </SheetTitle>
-            </SheetHeader>
-            <nav className="p-4 space-y-1">
+    <div className="min-h-screen bg-background text-foreground flex items-stretch justify-center">
+      {/* Phone shell */}
+      <div className="w-full max-w-[440px] flex flex-col min-h-screen relative bg-background border-x border-border/40">
+        {/* Top bar */}
+        <header className="sticky top-0 z-20 bg-background/85 backdrop-blur-xl border-b border-border/50">
+          <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+            <Link href="/">
+              <div className="flex items-center gap-2 cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                </div>
+                <div className="leading-none">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    RTO Guide
+                  </div>
+                  <div className="text-sm font-medium text-foreground mt-0.5">
+                    Standards 2025
+                  </div>
+                </div>
+              </div>
+            </Link>
+            <Link href="/favorites">
+              <button
+                className="w-9 h-9 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
+                aria-label="Favorites"
+                data-testid="button-header-favorites"
+              >
+                <Star className="w-4 h-4 text-foreground/80" />
+              </button>
+            </Link>
+          </div>
+        </header>
+
+        {/* Scroll area */}
+        <main className="flex-1 px-5 pt-5 pb-28 overflow-x-hidden">
+          {children}
+        </main>
+
+        {/* Bottom tab bar */}
+        <nav
+          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-30"
+          aria-label="Primary"
+        >
+          <div className="mx-3 mb-3 rounded-2xl bg-card/90 backdrop-blur-xl border border-border shadow-2xl shadow-black/40">
+            <div className="grid grid-cols-5 gap-1 p-2">
               {NAV_ITEMS.map((item) => {
-                const active = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+                const active = item.match(location);
                 return (
                   <Link key={item.href} href={item.href}>
                     <div
-                      className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors cursor-pointer ${
+                      className={`flex flex-col items-center justify-center gap-1 py-2 rounded-xl cursor-pointer transition-all ${
                         active
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          ? "bg-primary/15 text-primary"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
                       }`}
+                      data-testid={`tab-${item.label.toLowerCase()}`}
                     >
-                      <item.icon className="w-5 h-5" />
-                      {item.label}
+                      <item.icon
+                        className="w-[18px] h-[18px]"
+                        strokeWidth={active ? 2.4 : 1.8}
+                      />
+                      <span className="text-[10px] font-medium leading-none">
+                        {item.label}
+                      </span>
                     </div>
                   </Link>
                 );
               })}
-            </nav>
-          </SheetContent>
-        </Sheet>
-      </header>
-
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 border-r bg-card h-screen sticky top-0 shrink-0">
-        <div className="p-6 border-b">
-          <Link href="/">
-            <div className="flex items-center gap-2 text-primary cursor-pointer hover:opacity-80 transition-opacity">
-              <BookOpen className="w-6 h-6" />
-              <span className="font-serif font-bold text-lg">RTO Guide 2025</span>
             </div>
-          </Link>
-        </div>
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
-            const active = location === item.href || (item.href !== "/" && location.startsWith(item.href));
-            return (
-              <Link key={item.href} href={item.href}>
-                <div
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors cursor-pointer ${
-                    active
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </div>
-              </Link>
-            );
-          })}
+          </div>
         </nav>
-        <div className="p-4 border-t text-xs text-muted-foreground">
-          <p>Practice Guide for VET</p>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0">
-        <div className="flex-1 p-4 md:p-8 lg:p-12 max-w-6xl mx-auto w-full">
-          {children}
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
