@@ -80,17 +80,17 @@ function SplashContent({ onDismiss }: SplashScreenProps) {
         </div>
 
         <h1
-          className="font-serif font-medium leading-[0.95] tracking-tight"
+          className="font-sans leading-[0.95] tracking-tight"
           style={{
             animation: "splashRise 700ms 350ms cubic-bezier(0.22, 1, 0.36, 1) both",
           }}
         >
-          <span className="block italic font-light text-3xl text-foreground/90">
+          <span className="block font-semibold text-3xl text-foreground/90 tracking-tight">
             RTO Standards
           </span>
           <span
-            className="block font-bold text-5xl mt-1 bg-gradient-to-br from-[hsl(280,90%,80%)] to-[hsl(255,80%,65%)] bg-clip-text text-transparent"
-            style={{ letterSpacing: "-0.02em" }}
+            className="block font-black text-5xl mt-1 bg-gradient-to-br from-[hsl(280,90%,80%)] to-[hsl(255,80%,65%)] bg-clip-text text-transparent"
+            style={{ letterSpacing: "-0.03em" }}
           >
             2025
           </span>
@@ -103,8 +103,8 @@ function SplashContent({ onDismiss }: SplashScreenProps) {
           }}
         >
           <span className="h-px w-10 bg-primary/40" />
-          <span className="text-xs font-serif italic text-foreground/70">
-            Practice. Reflect. Embed.
+          <span className="text-xs font-sans font-medium tracking-widest uppercase text-foreground/50">
+            Practice · Reflect · Embed
           </span>
           <span className="h-px w-10 bg-primary/40" />
         </div>
