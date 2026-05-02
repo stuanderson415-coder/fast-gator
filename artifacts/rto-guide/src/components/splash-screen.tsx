@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { FastigiataLogo } from "@/components/fastigiata-logo";
 
 const SESSION_KEY = "rto-guide:splash-seen";
 
@@ -55,22 +56,27 @@ function SplashContent({ onDismiss }: SplashScreenProps) {
 
       {/* Content */}
       <div className="relative z-10 h-full w-full max-w-[440px] mx-auto flex flex-col items-center justify-center px-8 text-center">
+        {/* Fastigiata Systems logo mark — larger on splash */}
         <div
-          className="w-14 h-14 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center mb-7"
           style={{
-            animation: "splashFadeIn 600ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both",
+            animation: "splashFadeIn 600ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both",
           }}
         >
-          <BookOpen className="w-6 h-6 text-primary" strokeWidth={1.8} />
+          <FastigiataLogo variant="wordmark" className="text-xl justify-center" />
         </div>
 
+        {/* Divider */}
         <div
-          className="text-[10px] tracking-[0.4em] uppercase text-primary/80 mb-4"
+          className="mt-8 mb-6 flex items-center gap-3 w-full max-w-[220px]"
           style={{
             animation: "splashFadeIn 600ms 200ms cubic-bezier(0.22, 1, 0.36, 1) both",
           }}
         >
-          A practice guide for VET
+          <span className="flex-1 h-px bg-white/15" />
+          <span className="text-[9px] tracking-[0.35em] uppercase text-white/35 font-sans">
+            presents
+          </span>
+          <span className="flex-1 h-px bg-white/15" />
         </div>
 
         <h1

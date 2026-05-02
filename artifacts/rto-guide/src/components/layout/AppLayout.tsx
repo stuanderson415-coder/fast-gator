@@ -1,13 +1,16 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import {
   BookOpen,
   Home,
   LayoutList,
   Lightbulb,
+  Menu,
   Star,
   GraduationCap,
 } from "lucide-react";
+import { FastigiataLogo } from "@/components/fastigiata-logo";
+import { OverlayMenu } from "@/components/layout/OverlayMenu";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home, match: (l: string) => l === "/" },
@@ -15,7 +18,8 @@ const NAV_ITEMS = [
     href: "/standards",
     label: "Standards",
     icon: LayoutList,
-    match: (l: string) => l.startsWith("/standards") || l.startsWith("/quality-areas"),
+    match: (l: string) =>
+      l.startsWith("/standards") || l.startsWith("/quality-areas"),
   },
   {
     href: "/training",
@@ -33,12 +37,14 @@ const NAV_ITEMS = [
     href: "/notes",
     label: "Notes",
     icon: BookOpen,
-    match: (l: string) => l.startsWith("/notes") || l.startsWith("/favorites"),
+    match: (l: string) =>
+      l.startsWith("/notes") || l.startsWith("/favorites"),
   },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex items-stretch justify-center">
@@ -46,22 +52,26 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="w-full max-w-[440px] flex flex-col min-h-screen relative bg-background border-x border-border/40">
         {/* Top bar */}
         <header className="sticky top-0 z-20 bg-background/85 backdrop-blur-xl border-b border-border/50">
-          <div className="px-5 pt-5 pb-3 flex items-center justify-between">
-            <Link href="/">
-              <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-primary" />
-                </div>
-                <div className="leading-none">
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    RTO Guide
-                  </div>
-                  <div className="text-sm font-medium text-foreground mt-0.5">
-                    Standards 2025
-                  </div>
-                </div>
-              </div>
+          <div className="px-4 pt-4 pb-3 flex items-center justify-between gap-3">
+            {/* Hamburger */}
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="w-9 h-9 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors shrink-0"
+              aria-label="Open menu"
+              data-testid="button-open-menu"
+            >
+              <Menu className="w-4 h-4 text-foreground/80" />
+            </button>
+
+            {/* Logo — tapping goes home */}
+            <Link href="/" className="flex-1">
+              <FastigiataLogo
+                variant="wordmark"
+                className="text-sm cursor-pointer"
+              />
             </Link>
+
+            {/* Favorites star */}
             <Link href="/favorites">
               <button
                 className="w-9 h-9 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
@@ -113,6 +123,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </nav>
       </div>
+
+      {/* Overlay menu — rendered outside phone shell so scrim covers full viewport */}
+      <OverlayMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }
