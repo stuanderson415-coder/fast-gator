@@ -6,3 +6,9 @@ id = "5_rbz8H0kSaWrXdmKLGPs"
 uri = "file://artifacts/rto-guide/src/assets/training-hero.png"
 type = "image"
 title = "training hero"
+
+[[generated]]
+id = "gDRjGa5GvpiHQYeJIXpcJ"
+uri = "file://artifacts/rto-guide/src/assets/jigsaw-hero.png"
+type = "image"
+title = "dark jigsaw puzzle hero"

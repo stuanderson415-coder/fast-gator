@@ -56,60 +56,49 @@ export default function Dashboard() {
         </h1>
       </div>
 
-      {/* Hero progress card — orange */}
-      <div
-        className="relative overflow-hidden rounded-2xl p-4"
-        style={{
-          background:
-            "linear-gradient(135deg, hsl(28,90%,32%) 0%, hsl(22,85%,26%) 60%, hsl(18,80%,20%) 100%)",
-          border: "1px solid hsl(28,80%,40%,0.4)",
-        }}
-      >
-        {/* Orange glow */}
+      {/* Hero progress card — purple */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/30 via-primary/15 to-card border border-primary/20 p-4">
         <div
-          className="absolute -right-8 -top-8 w-36 h-36 rounded-full opacity-40 blur-3xl pointer-events-none"
-          style={{ background: "hsl(32, 100%, 60%)" }}
+          className="absolute -right-10 -top-10 w-44 h-44 rounded-full opacity-30 blur-3xl pointer-events-none"
+          style={{ background: "hsl(265, 80%, 60%)" }}
         />
         <div className="relative">
           <div className="flex items-center justify-between">
-            <div className="text-[10px] uppercase tracking-[0.25em] text-white/60">
+            <div className="text-[10px] uppercase tracking-[0.25em] text-foreground/70">
               Your progress
             </div>
-            <TrendingUp className="w-3.5 h-3.5 text-white/50" />
+            <TrendingUp className="w-3.5 h-3.5 text-foreground/70" />
           </div>
           <div className="flex items-baseline gap-1.5 mt-2">
-            <span className="text-4xl font-bold text-white tabular-nums">
+            <span className="text-4xl font-bold text-foreground tabular-nums">
               {overall}
             </span>
-            <span className="text-xl font-semibold text-white/50">%</span>
-            <span className="text-[11px] text-white/50 ml-1.5">
+            <span className="text-xl font-semibold text-foreground/60">%</span>
+            <span className="text-[11px] text-muted-foreground ml-1.5">
               of 18 standards embedded
             </span>
           </div>
-          <div className="mt-3 h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.12)" }}>
+          <div className="mt-3 h-1.5 rounded-full bg-foreground/10 overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-700"
-              style={{
-                width: `${overall}%`,
-                background: "linear-gradient(90deg, hsl(38,100%,65%), hsl(28,95%,58%))",
-              }}
+              className="h-full rounded-full bg-gradient-to-r from-[hsl(280,90%,75%)] to-[hsl(255,80%,65%)] transition-all duration-700"
+              style={{ width: `${overall}%` }}
             />
           </div>
           <div className="grid grid-cols-3 gap-2 mt-3">
             <Stat
               label="Embedded"
               value={summary.embeddedCount}
-              dotStyle={{ background: "hsl(38,100%,65%)" }}
+              dotStyle={{ background: "hsl(265,80%,70%)" }}
             />
             <Stat
               label="In progress"
               value={summary.inProgressCount + summary.planningCount}
-              dotStyle={{ background: "hsl(210,70%,65%)" }}
+              dotStyle={{ background: "hsl(220,70%,65%)" }}
             />
             <Stat
               label="Not started"
               value={summary.notStartedCount}
-              dotStyle={{ background: "rgba(255,255,255,0.25)" }}
+              dotStyle={{ background: "rgba(255,255,255,0.2)" }}
             />
           </div>
         </div>
