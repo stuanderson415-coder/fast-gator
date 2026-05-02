@@ -95,7 +95,7 @@ export function OverlayMenu({ open, onClose }: OverlayMenuProps) {
           width: "min(78vw, calc(440px * 0.82))",
           maxWidth: 340,
           background:
-            "linear-gradient(160deg, hsl(268, 68%, 28%) 0%, hsl(262, 62%, 22%) 60%, hsl(255, 58%, 18%) 100%)",
+            "linear-gradient(160deg, hsl(268, 65%, 16%) 0%, hsl(262, 60%, 12%) 60%, hsl(255, 55%, 9%) 100%)",
           boxShadow: open ? "8px 0 40px rgba(0,0,0,0.6)" : "none",
         }}
         role="dialog"
