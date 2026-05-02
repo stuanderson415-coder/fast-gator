@@ -1,16 +1,14 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import {
   BookOpen,
   Home,
   LayoutList,
   Lightbulb,
-  Menu,
   Star,
   GraduationCap,
 } from "lucide-react";
 import { FastigiataLogo } from "@/components/fastigiata-logo";
-import { OverlayMenu } from "@/components/layout/OverlayMenu";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home, match: (l: string) => l === "/" },
@@ -42,48 +40,85 @@ const NAV_ITEMS = [
   },
 ];
 
-const FIRST_VISIT_KEY = "rto-guide:menu-shown";
-
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    try {
-      if (window.location.search.includes("nosplash=1")) return;
-      const seen = window.sessionStorage.getItem(FIRST_VISIT_KEY);
-      if (!seen) {
-        window.sessionStorage.setItem(FIRST_VISIT_KEY, "1");
-        setMenuOpen(true);
-      }
-    } catch {
-      // ignore
-    }
-  }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex items-stretch justify-center">
-      {/* Phone shell */}
-      <div className="w-full max-w-[440px] flex flex-col min-h-screen relative bg-background border-x border-border/40">
-        {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-background/85 backdrop-blur-xl border-b border-border/50">
-          <div className="px-4 pt-4 pb-3 flex items-center justify-between gap-3">
-            {/* Hamburger */}
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="w-9 h-9 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors shrink-0"
-              aria-label="Open menu"
-              data-testid="button-open-menu"
-            >
-              <Menu className="w-4 h-4 text-foreground/80" />
-            </button>
+    <div className="min-h-screen bg-background text-foreground flex">
 
-            {/* Logo — tapping goes home */}
-            <Link href="/" className="flex-1">
-              <FastigiataLogo
-                variant="wordmark"
-                className="text-sm cursor-pointer"
-              />
+      {/* ── Desktop left sidebar ───────────────────────────────────────── */}
+      <aside
+        className="hidden md:flex flex-col fixed inset-y-0 left-0 z-20 w-56 border-r border-border/50"
+        style={{ background: "hsl(240,6%,7%)" }}
+      >
+        {/* Sidebar logo */}
+        <div className="px-5 pt-7 pb-5 border-b border-border/40">
+          <Link href="/">
+            <FastigiataLogo variant="wordmark" size="sm" className="cursor-pointer" />
+          </Link>
+        </div>
+
+        {/* Sidebar nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            const active = item.match(location);
+            return (
+              <Link key={item.href} href={item.href}>
+                <div
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    active
+                      ? "bg-primary/15 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                  }`}
+                  data-testid={`sidebar-nav-${item.label.toLowerCase()}`}
+                >
+                  <item.icon
+                    className="w-4 h-4 shrink-0"
+                    strokeWidth={active ? 2.4 : 1.8}
+                  />
+                  <span className="text-sm font-medium">{item.label}</span>
+                  {active && (
+                    <span
+                      className="ml-auto w-1.5 h-1.5 rounded-full"
+                      style={{ background: "hsl(28,90%,62%)" }}
+                    />
+                  )}
+                </div>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar footer */}
+        <div className="px-5 py-4 border-t border-border/40">
+          <div className="flex items-center gap-1.5">
+            <span
+              className="w-1.5 h-1.5 rounded-full shrink-0"
+              style={{ background: "hsl(28,90%,60%)" }}
+            />
+            <p className="text-[10px] text-muted-foreground/60 tracking-wider uppercase">
+              RTO Standards Companion
+            </p>
+          </div>
+        </div>
+      </aside>
+
+      {/* ── Main column ────────────────────────────────────────────────── */}
+      <div className="flex-1 md:ml-56 flex flex-col min-h-screen">
+
+        {/* Top bar */}
+        <header className="sticky top-0 z-10 bg-background/85 backdrop-blur-xl border-b border-border/50">
+          <div className="px-4 pt-4 pb-3 flex items-center justify-between gap-3 max-w-4xl mx-auto">
+
+            {/* Logo — mobile only (desktop has sidebar); tapping goes home */}
+            <Link href="/" className="flex-1 md:flex-none">
+              <span className="md:hidden">
+                <FastigiataLogo variant="wordmark" className="cursor-pointer" />
+              </span>
+              {/* Desktop: show current section label */}
+              <span className="hidden md:block text-sm font-semibold text-foreground/70 tracking-wide">
+                {NAV_ITEMS.find((n) => n.match(location))?.label ?? ""}
+              </span>
             </Link>
 
             {/* Favorites star */}
@@ -99,14 +134,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        {/* Scroll area */}
-        <main className="flex-1 px-5 pt-5 pb-28 overflow-x-hidden">
+        {/* Page content */}
+        <main className="flex-1 px-5 pt-5 pb-28 md:pb-10 overflow-x-hidden max-w-4xl mx-auto w-full">
           {children}
         </main>
 
-        {/* Bottom tab bar */}
+        {/* ── Mobile-only bottom tab bar ──────────────────────────────── */}
         <nav
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-30"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-30"
           aria-label="Primary"
         >
           <div className="mx-3 mb-3 rounded-2xl bg-card/90 backdrop-blur-xl border border-border shadow-2xl shadow-black/40">
@@ -144,9 +179,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </nav>
       </div>
-
-      {/* Overlay menu — rendered outside phone shell so scrim covers full viewport */}
-      <OverlayMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }
