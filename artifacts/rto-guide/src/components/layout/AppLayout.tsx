@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import {
   BookOpen,
@@ -42,9 +42,24 @@ const NAV_ITEMS = [
   },
 ];
 
+const FIRST_VISIT_KEY = "rto-guide:menu-shown";
+
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (window.location.search.includes("nosplash=1")) return;
+      const seen = window.sessionStorage.getItem(FIRST_VISIT_KEY);
+      if (!seen) {
+        window.sessionStorage.setItem(FIRST_VISIT_KEY, "1");
+        setMenuOpen(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex items-stretch justify-center">
