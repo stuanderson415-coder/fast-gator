@@ -92,7 +92,7 @@ export function OverlayMenu({ open, onClose }: OverlayMenuProps) {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          width: "78vw",
+          width: "min(78vw, calc(440px * 0.82))",
           maxWidth: 340,
           background:
             "linear-gradient(160deg, hsl(268, 68%, 28%) 0%, hsl(262, 62%, 22%) 60%, hsl(255, 58%, 18%) 100%)",
