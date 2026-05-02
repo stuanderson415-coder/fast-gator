@@ -159,9 +159,12 @@ export function OverlayMenu({ open, onClose }: OverlayMenuProps) {
 
         {/* Footer */}
         <div className="relative px-5 pb-8 pt-4 border-t border-white/10">
-          <p className="text-[10px] text-white/30 tracking-wider uppercase">
-            RTO Standards 2025 · Practice Guide
-          </p>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "hsl(28,90%,60%)" }} />
+            <p className="text-[10px] text-white/30 tracking-wider uppercase">
+              RTO Standards Companion
+            </p>
+          </div>
         </div>
       </div>
     </>

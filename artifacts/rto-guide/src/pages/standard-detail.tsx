@@ -54,7 +54,7 @@ export default function StandardDetail() {
 
   useEffect(() => {
     if (standard) {
-      document.title = `Standard ${standard.code} | RTO Guide 2025`;
+      document.title = `Standard ${standard.code} | RTO Standards Companion`;
     }
   }, [standard]);
 

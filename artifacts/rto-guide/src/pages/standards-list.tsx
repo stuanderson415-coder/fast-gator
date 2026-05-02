@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function StandardsList() {
   useEffect(() => {
-    document.title = "Standards | RTO Guide 2025";
+    document.title = "Standards | RTO Standards Companion";
   }, []);
 
   const [search, setSearch] = useState("");
@@ -27,7 +27,7 @@ export default function StandardsList() {
     <div className="space-y-8 pb-12 animate-in fade-in duration-500">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">Standards</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Browse and track your progress across all RTO Standards 2025.</p>
+        <p className="text-muted-foreground mt-2 text-lg">Browse and track your progress across all 18 standards.</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">

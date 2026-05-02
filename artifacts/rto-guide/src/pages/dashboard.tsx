@@ -15,7 +15,7 @@ import { StandardsReference } from "@/components/standards-reference";
 
 export default function Dashboard() {
   useEffect(() => {
-    document.title = "Dashboard | RTO Guide 2025";
+    document.title = "Dashboard | RTO Standards Companion";
   }, []);
 
   const { data: summary, isLoading, isError } = useGetDashboardSummary();
@@ -48,7 +48,7 @@ export default function Dashboard() {
     <div className="space-y-3 animate-in fade-in duration-500">
       {/* Greeting */}
       <div>
-        <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+        <p className="text-[10px] uppercase tracking-[0.25em] font-sans" style={{ color: "hsl(28,90%,58%)" }}>
           Monday morning
         </p>
         <h1 className="text-xl font-bold text-foreground mt-0.5 tracking-tight">
@@ -113,7 +113,7 @@ export default function Dashboard() {
           icon={Star}
           label="Favorites"
           value={summary.favoriteCount}
-          accent="text-[hsl(45,90%,65%)]"
+          accent="text-[hsl(28,90%,62%)]"
         />
         <QuickTile
           href="/notes"
@@ -127,7 +127,7 @@ export default function Dashboard() {
       {/* Strategy of the day */}
       {summary.featured && (
         <section>
-          <SectionHeader icon={Sparkles} title="Strategy of the day" />
+          <SectionHeader icon={Sparkles} title="Strategy of the day" warm />
           <Link href={`/standards/${summary.featured.strategy.standardId}`}>
             <div className="rounded-2xl bg-card border border-border p-3.5 cursor-pointer hover:border-primary/40 transition-colors group">
               <div className="flex items-start justify-between gap-3">
@@ -302,16 +302,21 @@ function SectionHeader({
   icon: Icon,
   title,
   inline,
+  warm,
 }: {
   icon: typeof Star;
   title: string;
   inline?: boolean;
+  warm?: boolean;
 }) {
   return (
     <div
       className={`flex items-center gap-2 ${inline ? "" : "mb-2.5"} text-foreground`}
     >
-      <Icon className="w-3 h-3 text-primary" />
+      <Icon
+        className="w-3 h-3"
+        style={{ color: warm ? "hsl(28,90%,60%)" : "hsl(var(--primary))" }}
+      />
       <h2 className="text-[10px] uppercase tracking-[0.2em] font-semibold text-foreground/75">
         {title}
       </h2>

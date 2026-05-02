@@ -28,7 +28,7 @@ import {
 
 export default function NotesList() {
   useEffect(() => {
-    document.title = "Notes | RTO Guide 2025";
+    document.title = "Notes | RTO Standards Companion";
   }, []);
 
   const queryClient = useQueryClient();

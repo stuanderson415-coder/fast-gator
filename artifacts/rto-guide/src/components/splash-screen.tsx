@@ -87,18 +87,18 @@ function SplashContent({ onDismiss }: SplashScreenProps) {
               animation: "splashRise 700ms 250ms cubic-bezier(0.22,1,0.36,1) both",
             }}
           >
-            <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/45 font-sans mb-2">
-              Practice Guide
+            <p className="text-[10px] uppercase tracking-[0.3em] font-sans mb-2" style={{ color: "hsl(28,90%,58%)" }}>
+              2025 Edition
             </p>
             <h1 className="font-sans leading-none tracking-tight">
               <span className="block font-semibold text-[1.75rem] text-foreground/90">
                 RTO Standards
               </span>
               <span
-                className="block font-black text-[3.25rem] leading-none bg-gradient-to-br from-[hsl(280,90%,80%)] to-[hsl(255,80%,65%)] bg-clip-text text-transparent"
+                className="block font-black text-[3.25rem] leading-none bg-gradient-to-br from-[hsl(28,90%,68%)] via-[hsl(280,90%,78%)] to-[hsl(255,80%,65%)] bg-clip-text text-transparent"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                2025
+                Companion
               </span>
             </h1>
           </div>

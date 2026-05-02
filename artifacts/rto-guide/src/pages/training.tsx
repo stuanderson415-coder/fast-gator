@@ -145,7 +145,7 @@ const KIND_META: Record<
 
 export default function TrainingPage() {
   useEffect(() => {
-    document.title = "Training | RTO Guide 2025";
+    document.title = "Training | RTO Standards Companion";
   }, []);
 
   const overallPercent = Math.round(

@@ -18,7 +18,7 @@ function formatEnumLabel(value: string) {
 
 export default function StrategiesList() {
   useEffect(() => {
-    document.title = "Strategies | RTO Guide 2025";
+    document.title = "Strategies | RTO Standards Companion";
   }, []);
 
   const [categoryFilter, setCategoryFilter] = useState<StrategyCategory | "all">("all");

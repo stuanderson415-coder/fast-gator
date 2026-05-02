@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export default function FavoritesList() {
   useEffect(() => {
-    document.title = "Favorites | RTO Guide 2025";
+    document.title = "Favorites | RTO Standards Companion";
   }, []);
 
   const { data: favorites, isLoading, isError } = useListFavorites();

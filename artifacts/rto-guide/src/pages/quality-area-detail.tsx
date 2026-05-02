@@ -23,7 +23,7 @@ export default function QualityAreaDetail() {
 
   useEffect(() => {
     if (qualityArea) {
-      document.title = `${qualityArea.code} | RTO Guide 2025`;
+      document.title = `${qualityArea.code} | RTO Standards Companion`;
     }
   }, [qualityArea]);
 

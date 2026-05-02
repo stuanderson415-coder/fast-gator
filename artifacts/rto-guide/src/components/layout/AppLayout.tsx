@@ -78,7 +78,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 aria-label="Favorites"
                 data-testid="button-header-favorites"
               >
-                <Star className="w-4 h-4 text-foreground/80" />
+                <Star className="w-4 h-4" style={{ color: "hsl(28,90%,62%)" }} />
               </button>
             </Link>
           </div>
@@ -115,6 +115,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
                       <span className="text-[10px] font-medium leading-none">
                         {item.label}
                       </span>
+                      {active && (
+                        <span
+                          className="w-1 h-1 rounded-full"
+                          style={{ background: "hsl(28,90%,62%)" }}
+                        />
+                      )}
                     </div>
                   </Link>
                 );
