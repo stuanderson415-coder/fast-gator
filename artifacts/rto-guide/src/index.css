@@ -77,11 +77,11 @@
   --elevate-2: rgba(255,255,255, .08);
 
   /* Charcoal canvas with violet accent */
-  --background: 240 6% 8%; 
+  --background: 240 6% 5%; 
   --foreground: 240 10% 96%; 
 
-  --border: 240 5% 18%; 
-  --card: 240 6% 12%; 
+  --border: 240 5% 14%; 
+  --card: 240 6% 9%; 
   --card-foreground: 240 10% 96%; 
   --card-border: 240 5% 18%; 
 

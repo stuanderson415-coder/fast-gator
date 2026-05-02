@@ -12,6 +12,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { StandardsReference } from "@/components/standards-reference";
+import jigsawHero from "@/assets/jigsaw-hero.png";
 
 export default function Dashboard() {
   useEffect(() => {
@@ -46,14 +47,32 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-3 animate-in fade-in duration-500">
-      {/* Greeting */}
-      <div>
-        <p className="text-[10px] uppercase tracking-[0.25em] font-sans" style={{ color: "hsl(28,90%,58%)" }}>
-          Monday morning
-        </p>
-        <h1 className="text-xl font-bold text-foreground mt-0.5 tracking-tight">
-          Welcome back.
-        </h1>
+
+      {/* Jigsaw image strip — full bleed with greeting overlaid */}
+      <div className="relative -mx-5 -mt-5 h-36 overflow-hidden">
+        <img
+          src={jigsawHero}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "center 35%" }}
+        />
+        {/* Dark overlay — deepens to near-black at bottom */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 35%, hsl(240,6%,5%) 100%)",
+          }}
+        />
+        {/* Greeting overlaid at bottom-left */}
+        <div className="absolute bottom-0 left-0 px-5 pb-3">
+          <p className="text-[10px] uppercase tracking-[0.25em] font-sans" style={{ color: "hsl(28,90%,62%)" }}>
+            Monday morning
+          </p>
+          <h1 className="text-xl font-bold text-white mt-0.5 tracking-tight leading-none">
+            Welcome back.
+          </h1>
+        </div>
       </div>
 
       {/* Hero progress card — purple */}
