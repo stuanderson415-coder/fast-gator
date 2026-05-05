@@ -1,23 +1,21 @@
 # fast-gator
-Understanding mapping and assessment
+Understanding RTO Standards
 # fast-gator
 
-Fast Gator is a beginner project that retrieves unit of competency data from training.gov.au.
+Fast Gator is a replit project designed to help VET practitioners better understand the RTO standards 2025
 
 ## Goal
 
 Enter a unit code and display:
 
-* Unit Code
-* Unit Description
-* Performance Evidence
+* Standards
+* Standards in Practice
+* PChecking Understanding
 
 ## Tech (initial)
 
-* Python
-* Requests
-* BeautifulSoup
+* Replit vibecoding for fast prototyping
 
 ## Status
 
-🚧 In progress – learning phase
+Prototype established in Replit
